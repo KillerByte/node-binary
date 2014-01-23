@@ -244,6 +244,17 @@ exports.parse = function parse (buffer) {
     var vars = Vars();
     self.vars = vars.store;
     
+    self.string = function (name, length) {
+		if (offset + length <= buffer.length) {
+			vars.set(name, buffer.toString('ascii', offset, offset + length));
+			offset += length;
+		}
+		else {
+			vars.set(name, null);
+		}
+		return self
+	}
+    
     self.tap = function (cb) {
         cb.call(self, vars.store);
         return self;
